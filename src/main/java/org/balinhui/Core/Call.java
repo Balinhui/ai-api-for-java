@@ -1,6 +1,8 @@
 package org.balinhui.Core;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.balinhui.Core.JSON.Ai;
+import org.balinhui.Core.JSON.Response;
 import org.balinhui.Core.Wid.Message;
 
 import java.net.URI;

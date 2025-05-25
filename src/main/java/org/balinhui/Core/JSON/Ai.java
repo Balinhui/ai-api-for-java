@@ -1,4 +1,4 @@
-package org.balinhui.Core;
+package org.balinhui.Core.JSON;
 
 import org.balinhui.Core.Wid.Message;
 
