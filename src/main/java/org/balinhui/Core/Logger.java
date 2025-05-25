@@ -5,7 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class Logger {
-    private final File logFile = new File("ai.log");
+    private final File logFile = new File("src\\main\\java\\org\\balinhui\\ai.log");
     private static final Logger logger = new Logger();
 
     private Logger() {
