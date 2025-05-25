@@ -40,7 +40,7 @@ public class Call {
         this.API_KEY = API_KEY;
     }
 
-    public void setAi(Request request) {
+    public void setRequest(Request request) {
         this.request = request;
     }
 

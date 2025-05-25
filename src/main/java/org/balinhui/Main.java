@@ -33,7 +33,7 @@ public class Main {
             Call call = new Call();
             call.setAPI_KEY(config.getProperty("API_KEY"));
             call.setAPI_URL(config.getProperty("API_URL"));
-            call.setAi(request);
+            call.setRequest(request);
             call.setAbleStore(true);
             Response response = call.getResponse();
             System.out.println(response.getChoices()[0].getMessage().getContent());
