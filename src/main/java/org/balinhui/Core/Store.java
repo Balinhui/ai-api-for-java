@@ -38,11 +38,9 @@ public class Store {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("[");
         for (Message message : dialogues) {
-            sb.append(message.getRole()).append(":").append(message.getContent()).append(";\n");
+            sb.append("[").append(message.getRole()).append("]").append(":").append(message.getContent()).append(";\n");
         }
-        sb.append("]");
         return sb.toString();
     }
 }
