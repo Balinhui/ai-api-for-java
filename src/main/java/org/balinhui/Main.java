@@ -11,7 +11,6 @@ import java.util.Properties;
 import java.util.Scanner;
 
 public class Main {
-
     private static final Properties config = new Properties();
     static {
         try {
