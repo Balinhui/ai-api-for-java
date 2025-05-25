@@ -83,6 +83,7 @@ public class Call {
     private void storeMessage(Message message) {
         message.setRole(Message.ASSISTANT);
         store.add(message);
+        Logger.getLogger().log(store.toString());
     }
 
     private String callApi(String requestBody) throws Exception {

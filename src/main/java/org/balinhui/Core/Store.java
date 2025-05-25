@@ -40,7 +40,7 @@ public class Store {
         StringBuilder sb = new StringBuilder();
         sb.append("[");
         for (Message message : dialogues) {
-            sb.append(message.getRole()).append(" ");
+            sb.append(message.getRole()).append(":").append(message.getContent()).append(";\n");
         }
         sb.append("]");
         return sb.toString();
