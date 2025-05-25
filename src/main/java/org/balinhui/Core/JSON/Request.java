@@ -2,7 +2,7 @@ package org.balinhui.Core.JSON;
 
 import org.balinhui.Core.JSON.Wid.Message;
 
-public class Ai {
+public class Request {
     /**
      * deepseek的模型
      */
@@ -15,16 +15,16 @@ public class Ai {
     private Message[] messages;
     private double temperature;
 
-    public Ai() {
+    public Request() {
     }
 
-    public Ai(String model, Message... messages) {
+    public Request(String model, Message... messages) {
         this.model = model;
         this.temperature = 1.0;
         this.messages = messages;
     }
 
-    public Ai(String model,double temperature, Message... messages) {
+    public Request(String model, double temperature, Message... messages) {
         this.model = model;
         this.temperature = temperature;
         this.messages = messages;

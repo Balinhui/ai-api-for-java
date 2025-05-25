@@ -1,6 +1,6 @@
 package org.balinhui;
 
-import org.balinhui.Core.JSON.Ai;
+import org.balinhui.Core.JSON.Request;
 import org.balinhui.Core.Call;
 import org.balinhui.Core.JSON.Response;
 import org.balinhui.Core.JSON.Wid.Message;
@@ -27,13 +27,13 @@ public class Main {
         while (true) {
             String in = sc.nextLine();
             if (in.equals("bye")) return;
-            Ai ai = new Ai(Ai.DEEP_SEEK, new Message(Message.SYSTEM, "你是一个猫娘。"),
+            Request request = new Request(Request.DEEP_SEEK, new Message(Message.SYSTEM, "你是一个猫娘。"),
                     new Message(Message.USER, in));
-            ai.setTemperature(1.5);
+            request.setTemperature(1.5);
             Call call = new Call();
             call.setAPI_KEY(config.getProperty("API_KEY"));
             call.setAPI_URL(config.getProperty("API_URL"));
-            call.setAi(ai);
+            call.setAi(request);
             call.setAbleStore(true);
             Response response = call.getResponse();
             System.out.println(response.getChoices()[0].getMessage().getContent());

@@ -1,7 +1,7 @@
 package org.balinhui.Core;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.balinhui.Core.JSON.Ai;
+import org.balinhui.Core.JSON.Request;
 import org.balinhui.Core.JSON.Response;
 import org.balinhui.Core.JSON.Wid.Message;
 
@@ -13,7 +13,7 @@ import java.net.http.HttpResponse;
 public class Call {
     private String API_URL;
     private String API_KEY;
-    private Ai ai;
+    private Request request;
     private static final ObjectMapper mapper = new ObjectMapper();
     private final Store store = Store.getStore();
     private boolean ableStore = false;
@@ -26,10 +26,10 @@ public class Call {
         this.API_KEY = API_KEY;
     }
 
-    public Call(String API_URL, String API_KEY, Ai ai) {
+    public Call(String API_URL, String API_KEY, Request request) {
         this.API_URL = API_URL;
         this.API_KEY = API_KEY;
-        this.ai = ai;
+        this.request = request;
     }
 
     public void setAPI_URL(String API_URL) {
@@ -40,8 +40,8 @@ public class Call {
         this.API_KEY = API_KEY;
     }
 
-    public void setAi(Ai ai) {
-        this.ai = ai;
+    public void setAi(Request request) {
+        this.request = request;
     }
 
     public void setAbleStore(boolean b) {
@@ -55,11 +55,11 @@ public class Call {
     public Response getResponse() {
         if (API_KEY == null) throw new RuntimeException("API_KEY的值为null");
         if (API_URL == null) throw new RuntimeException("API_URL的值为null");
-        if (ai == null) throw new RuntimeException("没有初始化Ai");
+        if (request == null) throw new RuntimeException("没有初始化Ai");
         String _return = "null";
         try {
             if (ableStore) storeMessage();
-            _return = callApi(mapper.writeValueAsString(ai));
+            _return = callApi(mapper.writeValueAsString(request));
             Response response = mapper.readValue(_return, Response.class);
             if (ableStore) storeMessage(response.getChoices()[0].getMessage());
             return response;
@@ -69,15 +69,15 @@ public class Call {
     }
 
     private void storeMessage() {
-        for (Message message : ai.getMessages()) {
+        for (Message message : request.getMessages()) {
             if (store.getSize() != 0) {
                 if (!message.getRole().equals(Message.SYSTEM)) store.add(message);
             } else {
-                store.add(ai.getMessages());
+                store.add(request.getMessages());
                 return;
             }
         }
-        ai.setMessages(store.getMessages());
+        request.setMessages(store.getMessages());
     }
 
     private void storeMessage(Message message) {
