@@ -1,6 +1,6 @@
 package org.balinhui.Core;
 
-import org.balinhui.Core.Wid.Message;
+import org.balinhui.Core.JSON.Wid.Message;
 
 import java.util.ArrayList;
 import java.util.Collections;

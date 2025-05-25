@@ -3,7 +3,7 @@ package org.balinhui;
 import org.balinhui.Core.JSON.Ai;
 import org.balinhui.Core.Call;
 import org.balinhui.Core.JSON.Response;
-import org.balinhui.Core.Wid.Message;
+import org.balinhui.Core.JSON.Wid.Message;
 
 import java.io.FileInputStream;
 import java.io.IOException;

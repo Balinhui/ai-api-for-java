@@ -1,4 +1,4 @@
-package org.balinhui.Core.Wid;
+package org.balinhui.Core.JSON.Wid;
 
 public class Choice {
     private int index;

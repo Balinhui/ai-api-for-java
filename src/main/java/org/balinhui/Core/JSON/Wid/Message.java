@@ -1,4 +1,4 @@
-package org.balinhui.Core.Wid;
+package org.balinhui.Core.JSON.Wid;
 
 public class Message {
     public static final String USER = "user";

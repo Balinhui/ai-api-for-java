@@ -1,6 +1,6 @@
 package org.balinhui.Core.JSON;
 
-import org.balinhui.Core.Wid.Message;
+import org.balinhui.Core.JSON.Wid.Message;
 
 public class Ai {
     /**
