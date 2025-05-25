@@ -3,8 +3,15 @@ package org.balinhui.Core;
 import org.balinhui.Core.Wid.Message;
 
 public class Ai {
+    /**
+     * deepseek的模型
+     */
     public static final String DEEP_SEEK = "deepseek-chat";
     private String model;
+
+    /**
+     * 发送的消息
+     */
     private Message[] messages;
     private double temperature;
 

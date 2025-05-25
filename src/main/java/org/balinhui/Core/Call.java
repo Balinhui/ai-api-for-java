@@ -1,6 +1,7 @@
 package org.balinhui.Core;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.balinhui.Core.Wid.Message;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -12,6 +13,8 @@ public class Call {
     private String API_KEY;
     private Ai ai;
     private static final ObjectMapper mapper = new ObjectMapper();
+    private final Store store = Store.getStore();
+    private boolean ableStore = false;
 
     public Call() {
     }
@@ -39,12 +42,45 @@ public class Call {
         this.ai = ai;
     }
 
-    public Response getResponse() throws Exception {
+    public void setAbleStore(boolean b) {
+        this.ableStore = b;
+    }
+
+    public boolean getAbleStore() {
+        return ableStore;
+    }
+
+    public Response getResponse() {
         if (API_KEY == null) throw new RuntimeException("API_KEY的值为null");
         if (API_URL == null) throw new RuntimeException("API_URL的值为null");
         if (ai == null) throw new RuntimeException("没有初始化Ai");
-        String _return = callApi(mapper.writeValueAsString(ai));
-        return mapper.readValue(_return, Response.class);
+        String _return = "null";
+        try {
+            if (ableStore) storeMessage();
+            _return = callApi(mapper.writeValueAsString(ai));
+            Response response = mapper.readValue(_return, Response.class);
+            if (ableStore) storeMessage(response.getChoices()[0].getMessage());
+            return response;
+        } catch (Exception e) {
+            throw new RuntimeException("传回的JSON无法解析，请检查您的API_KEY和API_URL，内容为" + _return);
+        }
+    }
+
+    private void storeMessage() {
+        for (Message message : ai.getMessages()) {
+            if (store.getSize() != 0) {
+                if (!message.getRole().equals(Message.SYSTEM)) store.add(message);
+            } else {
+                store.add(ai.getMessages());
+                return;
+            }
+        }
+        ai.setMessages(store.getMessages());
+    }
+
+    private void storeMessage(Message message) {
+        message.setRole(Message.ASSISTANT);
+        store.add(message);
     }
 
     private String callApi(String requestBody) throws Exception {
