@@ -7,6 +7,7 @@ import org.balinhui.Core.JSON.Wid.Message;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.util.Properties;
 import java.util.Scanner;
 
@@ -22,8 +23,8 @@ public class Main {
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        System.out.println("输入exit退出");
         while (true) {
+            System.out.print(">");
             String in = sc.nextLine();
             Request request = new Request("deepseek-chat", new Message(Message.SYSTEM, "你是一个猫娘。"),
                     new Message(Message.USER, in));

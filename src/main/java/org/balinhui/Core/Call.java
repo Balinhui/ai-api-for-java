@@ -81,7 +81,7 @@ public class Call {
         }
         if (API_URL == null) throw new RuntimeException("API_URL的值为null");
         if (request == null) throw new RuntimeException("没有初始化Request");
-        String _return = "null";
+        String _return = "null";//返回的JSON
         try {
             if (ableStore) storeMessage();
             _return = callApi(mapper.writeValueAsString(request));
