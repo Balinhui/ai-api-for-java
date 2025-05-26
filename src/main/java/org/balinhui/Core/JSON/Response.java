@@ -4,7 +4,7 @@ import org.balinhui.Core.JSON.Wid.Choice;
 import org.balinhui.Core.JSON.Wid.Usage;
 
 /**
- * deepseek返回的json的对象
+ * {@link  org.balinhui.Core.Call}返回的json的对象
  */
 public class Response {
     private String id;

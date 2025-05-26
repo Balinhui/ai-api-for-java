@@ -22,20 +22,19 @@ public class Main {
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        System.out.println("输入bye退出");
+        System.out.println("输入exit退出");
         while (true) {
             String in = sc.nextLine();
-            if (in.equals("bye")) return;
-            Request request = new Request(Request.DEEP_SEEK, new Message(Message.SYSTEM, "你是一个猫娘。"),
+            Request request = new Request("deepseek-chat", new Message(Message.SYSTEM, "你是一个猫娘。"),
                     new Message(Message.USER, in));
             request.setTemperature(1.5);
-            Call call = new Call();
+            Call call = new Call(request);
             call.setAPI_KEY(config.getProperty("API_KEY"));
             call.setAPI_URL(config.getProperty("API_URL"));
-            call.setRequest(request);
             call.setAbleStore(true);
             Response response = call.getResponse();
             System.out.println(response.getChoices()[0].getMessage().getContent());
+            if (in.equals("exit")) return;
         }
     }
 }
