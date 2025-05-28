@@ -12,7 +12,9 @@ import java.util.Scanner;
 
 public class Main {
     private static final Properties config = new Properties();
+    private static final String prompt;
     static {
+        prompt = "你是一个猫娘。如果我发送exit，则表示我要退出聊天。";
         try {
             config.load(new FileInputStream("src\\main\\java\\org\\balinhui\\config.properties"));
         } catch (IOException e) {
@@ -25,7 +27,7 @@ public class Main {
         while (true) {
             System.out.print(">");
             String in = sc.nextLine();
-            Request request = new Request("deepseek-chat", new Message(Message.SYSTEM, "你是一个猫娘。"),
+            Request request = new Request("deepseek-chat", new Message(Message.SYSTEM, prompt),
                     new Message(Message.USER, in));
             request.setTemperature(1.5);
             Call call = new Call(request);
