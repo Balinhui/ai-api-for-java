@@ -39,7 +39,7 @@ public class Store {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         for (Message message : dialogues) {
-            sb.append("[").append(message.getRole()).append("]").append(":").append(message.getContent()).append(";\n");
+            sb.append("<").append(message.getRole()).append(">").append(":").append(message.getContent()).append(".\n");
         }
         return sb.toString();
     }
