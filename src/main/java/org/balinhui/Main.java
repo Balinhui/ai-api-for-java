@@ -4,9 +4,11 @@ import org.balinhui.Core.JSON.Request;
 import org.balinhui.Core.Call;
 import org.balinhui.Core.JSON.Response;
 import org.balinhui.Core.JSON.Wid.Message;
+import org.balinhui.Core.Logger;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Properties;
 import java.util.Scanner;
 
@@ -27,6 +29,12 @@ public class Main {
         while (true) {
             System.out.print(">");
             String in = sc.nextLine();
+
+            if (in.equals("list")) {
+                System.out.println(Arrays.toString(Logger.getLogList()));
+                continue;
+            }
+
             Request request = new Request("deepseek-chat", new Message(Message.SYSTEM, prompt),
                     new Message(Message.USER, in));
             request.setTemperature(1.5);
