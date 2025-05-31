@@ -11,6 +11,10 @@ public class Logger {
     private boolean action = false;
     private static final Logger logger = new Logger();
 
+    static {
+        if (logFile.mkdir()) throw new RuntimeException("Cannot create a folder");
+    }
+
     private Logger() {
     }
 

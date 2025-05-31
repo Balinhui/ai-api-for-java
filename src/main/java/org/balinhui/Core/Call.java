@@ -89,16 +89,15 @@ public class Call {
             Response response = mapper.readValue(_return, Response.class);
             if (ableStore) storeMessage(response.getChoices()[0].getMessage());
             return response;
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
         } catch (Exception e) {
-            try {
+            throw new RuntimeException(e);
+            /*try {
                 Wrong wrongInfo = mapper.readValue(_return, Wrong.class);
                 throw new RuntimeException("API_URL错误。\nevent_id:" + wrongInfo.getEvent_id() +
                         ".\nerror_msg:" + wrongInfo.getError_msg());
             } catch (JsonProcessingException ex) {
                 throw new RuntimeException("传回的JSON "+ _return + " 无法解析，请检查您的API_KEY和API_URL");
-            }
+            }*/
         }
     }
 
