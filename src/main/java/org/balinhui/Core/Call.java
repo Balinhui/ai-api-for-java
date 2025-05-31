@@ -1,9 +1,11 @@
 package org.balinhui.Core;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.balinhui.Core.JSON.Request;
 import org.balinhui.Core.JSON.Response;
 import org.balinhui.Core.JSON.Widgets.Message;
+import org.balinhui.Core.JSON.Wrong;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -88,15 +90,15 @@ public class Call {
             if (ableStore) storeMessage(response.getChoices()[0].getMessage());
             return response;
         } catch (Exception e) {
-            System.out.println(_return);
-            throw new RuntimeException(e);
-            /*try {
+            try {
                 Wrong wrongInfo = mapper.readValue(_return, Wrong.class);
+                if (wrongInfo.getError() != null)
+                    throw new RuntimeException(wrongInfo.getError().getMessage());
                 throw new RuntimeException("API_URL错误。\nevent_id:" + wrongInfo.getEvent_id() +
                         ".\nerror_msg:" + wrongInfo.getError_msg());
             } catch (JsonProcessingException ex) {
                 throw new RuntimeException("传回的JSON "+ _return + " 无法解析，请检查您的API_KEY和API_URL");
-            }*/
+            }
         }
     }
 
