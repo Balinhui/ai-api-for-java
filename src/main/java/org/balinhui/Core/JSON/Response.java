@@ -14,6 +14,7 @@ public class Response {
     private Choice[] choices;
     private Usage usage;
     private String system_fingerprint;
+    private String service_tier;
 
     public Response() {
     }
@@ -23,7 +24,8 @@ public class Response {
                     String model,
                     Choice[] choices,
                     Usage usage,
-                    String system_fingerprint) {
+                    String system_fingerprint,
+                    String service_tier) {
         this.id = id;
         this.object = object;
         this.created = created;
@@ -31,6 +33,7 @@ public class Response {
         this.choices = choices;
         this.usage = usage;
         this.system_fingerprint = system_fingerprint;
+        this.service_tier = service_tier;
     }
 
     public String getId() {
@@ -59,6 +62,10 @@ public class Response {
 
     public String getSystem_fingerprint() {
         return system_fingerprint;
+    }
+
+    public String getService_tier() {
+        return service_tier;
     }
 }
 

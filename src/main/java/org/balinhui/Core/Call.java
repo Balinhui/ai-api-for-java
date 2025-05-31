@@ -81,10 +81,11 @@ public class Call {
         }
         if (API_URL == null) throw new RuntimeException("API_URL的值为null");
         if (request == null) throw new RuntimeException("没有初始化Request");
+        String _send = "null";//发送的JSON
         String _return = "null";//返回的JSON
         try {
             if (ableStore) storeMessage();
-            _return = callApi(mapper.writeValueAsString(request));
+            _return = callApi(_send = mapper.writeValueAsString(request));
             //将响应的JSON转化成相应的Java类
             Response response = mapper.readValue(_return, Response.class);
             if (ableStore) storeMessage(response.getChoices()[0].getMessage());
@@ -97,7 +98,9 @@ public class Call {
                 throw new RuntimeException("API_URL错误。\nevent_id:" + wrongInfo.getEvent_id() +
                         ".\nerror_msg:" + wrongInfo.getError_msg());
             } catch (JsonProcessingException ex) {
-                throw new RuntimeException("传回的JSON "+ _return + " 无法解析，请检查您的API_KEY和API_URL");
+                System.out.println("发送: " + _send);
+                System.out.println("接收: " + _return);
+                throw new RuntimeException(ex);
             }
         }
     }

@@ -13,6 +13,10 @@ public class Message {
      * 消息的内容
      */
     private String content;
+    private String refusal;
+    private String tool_calls;
+    private String function_call;
+    private Annotations[] annotations;
 
     public Message() {
     }
@@ -20,6 +24,16 @@ public class Message {
     public Message(String role, String content) {
         this.role = role;
         this.content = content;
+    }
+
+    private Message(String role, String content, String tool_calls, String function_call,
+                    Annotations[] annotations, String refusal) {
+        this.role = role;
+        this.content = content;
+        this.tool_calls = tool_calls;
+        this.function_call = function_call;
+        this.annotations = annotations;
+        this.refusal = refusal;
     }
 
     public String getRole() {
@@ -32,5 +46,21 @@ public class Message {
 
     public String getContent() {
         return content;
+    }
+
+    public String getTool_calls() {
+        return tool_calls;
+    }
+
+    public String getFunction_call() {
+        return function_call;
+    }
+
+    public Annotations[] getAnnotations() {
+        return annotations;
+    }
+
+    public String getRefusal() {
+        return refusal;
     }
 }
