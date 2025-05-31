@@ -12,7 +12,10 @@ public class Logger {
     private static final Logger logger = new Logger();
 
     static {
-        if (!logFile.mkdir()) throw new RuntimeException("Cannot create a folder");
+        if (!logFile.isDirectory()) {
+            System.out.println(logFile.isDirectory());
+            if (!logFile.mkdir()) throw new RuntimeException("无法创建文件夹");
+        }
     }
 
     private Logger() {
