@@ -6,7 +6,7 @@
 
     <groupId>org.balinhui</groupId>
     <artifactId>Ai</artifactId>
-    <version>4.0</version>
+    <version>5.0</version>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>

@@ -90,13 +90,15 @@ public class Call {
             if (ableStore) storeMessage(response.getChoices()[0].getMessage());
             return response;
         } catch (Exception e) {
-            try {
+            System.out.println(_return);
+            throw new RuntimeException(e);
+            /*try {
                 Wrong wrongInfo = mapper.readValue(_return, Wrong.class);
                 throw new RuntimeException("API_URL错误。\nevent_id:" + wrongInfo.getEvent_id() +
                         ".\nerror_msg:" + wrongInfo.getError_msg());
             } catch (JsonProcessingException ex) {
                 throw new RuntimeException("传回的JSON "+ _return + " 无法解析，请检查您的API_KEY和API_URL");
-            }
+            }*/
         }
     }
 
