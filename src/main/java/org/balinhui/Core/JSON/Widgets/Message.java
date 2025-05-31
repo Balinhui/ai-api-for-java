@@ -18,7 +18,7 @@ public class Message {
     private String function_call;
     private Annotations[] annotations;
 
-    public Message() {
+    private Message() {
     }
 
     public Message(String role, String content) {
