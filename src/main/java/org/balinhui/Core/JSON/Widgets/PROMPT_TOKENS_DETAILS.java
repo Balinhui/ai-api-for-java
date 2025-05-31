@@ -1,4 +1,4 @@
-package org.balinhui.Core.JSON.Wid;
+package org.balinhui.Core.JSON.Widgets;
 
 public class PROMPT_TOKENS_DETAILS {
     private int cached_tokens;

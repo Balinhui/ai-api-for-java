@@ -1,4 +1,4 @@
-package org.balinhui.Core.JSON.Wid;
+package org.balinhui.Core.JSON.Widgets;
 
 public class Usage {
     private int prompt_tokens;

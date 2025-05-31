@@ -1,4 +1,4 @@
-package org.balinhui.Core.JSON.Wid;
+package org.balinhui.Core.JSON.Widgets;
 
 public class COMPLETION_TOKENS_DETAILS {
     private int text_tokens;

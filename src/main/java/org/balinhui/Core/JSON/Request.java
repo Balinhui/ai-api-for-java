@@ -1,6 +1,6 @@
 package org.balinhui.Core.JSON;
 
-import org.balinhui.Core.JSON.Wid.Message;
+import org.balinhui.Core.JSON.Widgets.Message;
 
 public class Request {
     private String model;

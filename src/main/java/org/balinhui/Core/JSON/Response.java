@@ -1,7 +1,7 @@
 package org.balinhui.Core.JSON;
 
-import org.balinhui.Core.JSON.Wid.Choice;
-import org.balinhui.Core.JSON.Wid.Usage;
+import org.balinhui.Core.JSON.Widgets.Choice;
+import org.balinhui.Core.JSON.Widgets.Usage;
 
 /**
  * {@link  org.balinhui.Core.Call}返回的json的对象
