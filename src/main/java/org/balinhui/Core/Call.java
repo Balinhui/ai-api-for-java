@@ -89,6 +89,8 @@ public class Call {
             Response response = mapper.readValue(_return, Response.class);
             if (ableStore) storeMessage(response.getChoices()[0].getMessage());
             return response;
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
         } catch (Exception e) {
             try {
                 Wrong wrongInfo = mapper.readValue(_return, Wrong.class);
