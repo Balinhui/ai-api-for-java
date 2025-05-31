@@ -81,6 +81,8 @@ public class Call {
         }
         if (API_URL == null) throw new RuntimeException("API_URL的值为null");
         if (request == null) throw new RuntimeException("没有初始化Request");
+        reviseURL();//为URL后加上特定分页
+
         String _send = "null";//发送的JSON
         String _return = "null";//返回的JSON
         try {
@@ -149,5 +151,11 @@ public class Call {
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         return response.body();
+    }
+
+    private void reviseURL() {
+        if (!API_URL.endsWith("/chat/completions"))
+            if (API_URL.endsWith("/")) API_URL = API_URL + "chat/completions";
+            else API_URL = API_URL + "/chat/completions";
     }
 }
