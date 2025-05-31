@@ -13,7 +13,6 @@ public class Logger {
 
     static {
         if (!logFile.isDirectory()) {
-            System.out.println(logFile.isDirectory());
             if (!logFile.mkdir()) throw new RuntimeException("无法创建文件夹");
         }
     }
