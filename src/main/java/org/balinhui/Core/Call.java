@@ -96,7 +96,7 @@ public class Call {
             responseList = new ArrayList<>();
             _return = callApi(_send = mapper.writeValueAsString(request));
             if (!this.request.getStream()) {
-                //将响应的JSON转化成相应的Java类
+                //将响应的JSON解析成相应的Java类
                 Response response = mapper.readValue(_return, Response.class);
                 responseList.add(response);
                 if (ableStore) storeMessage(response.getChoices()[0].getMessage());
