@@ -93,8 +93,8 @@ public class Call {
         try {
             if (ableStore) storeMessage();
             responseList = new ArrayList<>();
+            _return = callApi(_send = mapper.writeValueAsString(request));
             if (!this.request.getStream()) {
-                _return = callApi(_send = mapper.writeValueAsString(request));
                 //将响应的JSON转化成相应的Java类
                 Response response = mapper.readValue(_return, Response.class);
                 responseList.add(response);
@@ -201,6 +201,7 @@ public class Call {
                                 }
                                 Message message = new Message(Message.ASSISTANT, sb.toString());
                                 if (ableStore) storeMessage(message);
+                                responseList.add(new Response("[DONE]", "", 0, "", null, null, "", ""));
                                 Thread.currentThread().interrupt();
                             }
                         }));
