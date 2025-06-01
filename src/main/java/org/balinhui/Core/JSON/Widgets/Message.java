@@ -9,10 +9,6 @@ public class Message {
      * 选择的角色，有<code>user</code>，<code>system</code>和<code>assistant</code>
      */
     private String role;
-
-    /**
-     * 消息的内容
-     */
     private String content;
     private String reasoning_content;
     private String refusal;
