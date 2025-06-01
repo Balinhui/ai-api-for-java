@@ -17,7 +17,7 @@ import java.util.concurrent.Flow;
 
 public class Call {
     private final String NONE = "StreamIsOpen";
-    public final String DONE = "[DONE]";
+    public static final String DONE = "[DONE]";
     private String API_URL;
     private String API_KEY;
     private Request request;
