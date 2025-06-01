@@ -13,6 +13,7 @@ public class Message {
      * 消息的内容
      */
     private String content;
+    private String reasoning_content;
     private String refusal;
     private String tool_calls;
     private String function_call;
@@ -26,10 +27,11 @@ public class Message {
         this.content = content;
     }
 
-    private Message(String role, String content, String tool_calls, String function_call,
+    private Message(String role, String content, String reasoning_content, String tool_calls, String function_call,
                     Annotations[] annotations, String refusal) {
         this.role = role;
         this.content = content;
+        this.reasoning_content = reasoning_content;
         this.tool_calls = tool_calls;
         this.function_call = function_call;
         this.annotations = annotations;
@@ -46,6 +48,10 @@ public class Message {
 
     public String getContent() {
         return content;
+    }
+
+    public String getReasoning_content() {
+        return reasoning_content;
     }
 
     public String getTool_calls() {
