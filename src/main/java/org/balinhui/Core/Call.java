@@ -11,14 +11,19 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Flow;
 
 public class Call {
+    private final String NONE = "StreamIsOpen";
     private String API_URL;
     private String API_KEY;
     private Request request;
     private static final ObjectMapper mapper = new ObjectMapper();
     private final Store store = Store.getStore();
     private boolean ableStore = false;
+    private List<Response> responseList;
 
     public Call() {
     }
@@ -63,17 +68,17 @@ public class Call {
      * @param request 请求
      * @return 响应JSON的Java类
      */
-    public Response getResponse(Request request) {
+    public List<Response> getResponseList(Request request) {
         if (this.request != request)
             this.request = request;
-        return getResponse();
+        return getResponseList();
     }
 
     /**
      * 向<code>API_URL</code>发送请求，获得Java类
      * @return 响应JSON的Java类
      */
-    public Response getResponse() {
+    public List<Response> getResponseList() {
         //检查必须的项
         if (API_KEY == null) {
             if ((API_KEY = System.getenv("API_KEY")) == null)
@@ -87,11 +92,15 @@ public class Call {
         String _return = "null";//返回的JSON
         try {
             if (ableStore) storeMessage();
-            _return = callApi(_send = mapper.writeValueAsString(request));
-            //将响应的JSON转化成相应的Java类
-            Response response = mapper.readValue(_return, Response.class);
-            if (ableStore) storeMessage(response.getChoices()[0].getMessage());
-            return response;
+            responseList = new ArrayList<>();
+            if (!this.request.getStream()) {
+                _return = callApi(_send = mapper.writeValueAsString(request));
+                //将响应的JSON转化成相应的Java类
+                Response response = mapper.readValue(_return, Response.class);
+                responseList.add(response);
+                if (ableStore) storeMessage(response.getChoices()[0].getMessage());
+            }
+            return responseList;
         } catch (Exception e) {
             try {
                 Wrong wrongInfo = mapper.readValue(_return, Wrong.class);
@@ -149,8 +158,63 @@ public class Call {
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                 .build();
 
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        return response.body();
+        if (!this.request.getStream()) {
+            //未打开Stream，普通发送.
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            return response.body();
+        } else {
+            //已打开Stream，开一个线程
+            Thread stream = new Thread(() -> {
+                client.sendAsync(request, HttpResponse.BodyHandlers.fromLineSubscriber(
+                        new Flow.Subscriber<>() {
+                            private Flow.Subscription subscription;
+
+                            @Override
+                            public void onSubscribe(Flow.Subscription subscription) {
+                                this.subscription = subscription;
+                                subscription.request(1); // 请求第一个数据项
+                            }
+
+                            @Override
+                            public void onNext(String item) {
+                                // 处理每个数据块
+                                if (!item.isEmpty() && !item.equals("data: [DONE]")) {
+                                    try {
+                                        responseList.add(mapper.readValue(item.substring(6).trim(), Response.class));
+                                    } catch (JsonProcessingException e) {
+                                        throw new RuntimeException(e);
+                                    }
+                                }
+                                subscription.request(1); // 请求下一个数据项
+                            }
+
+                            @Override
+                            public void onError(Throwable throwable) {
+                                System.err.println("错误: " + throwable.getMessage());
+                            }
+
+                            @Override
+                            public void onComplete() {
+                                StringBuilder sb = new StringBuilder();
+                                for (Response response : responseList) {
+                                    sb.append(response.getChoices()[0].getDelta().getContent());
+                                }
+                                Message message = new Message(Message.ASSISTANT, sb.toString());
+                                if (ableStore) storeMessage(message);
+                                Thread.currentThread().interrupt();
+                            }
+                        }));
+
+                // 保持请求线程运行，等待响应
+                try {
+                    Thread.sleep(60000); // 等待60秒
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            });
+            stream.start();
+            return NONE;
+        }
     }
 
     private void reviseURL() {
