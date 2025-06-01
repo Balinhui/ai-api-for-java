@@ -17,6 +17,7 @@ import java.util.concurrent.Flow;
 
 public class Call {
     private final String NONE = "StreamIsOpen";
+    public final String DONE = "[DONE]";
     private String API_URL;
     private String API_KEY;
     private Request request;
@@ -163,6 +164,7 @@ public class Call {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             return response.body();
         } else {
+            final RunState runState = new RunState(true);
             //已打开Stream，开一个线程
             Thread stream = new Thread(() -> {
                 client.sendAsync(request, HttpResponse.BodyHandlers.fromLineSubscriber(
@@ -201,16 +203,19 @@ public class Call {
                                 }
                                 Message message = new Message(Message.ASSISTANT, sb.toString());
                                 if (ableStore) storeMessage(message);
-                                responseList.add(new Response("[DONE]", "", 0, "", null, null, "", ""));
-                                Thread.currentThread().interrupt();
+                                responseList.add(new Response(DONE, "", 0,
+                                        "", null, null, "", ""));
+                                runState.state = false;
                             }
                         }));
 
                 // 保持请求线程运行，等待响应
-                try {
-                    Thread.sleep(60000); // 等待60秒
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
+                while (runState.state) {
+                    try {
+                        Thread.sleep(3000); // 等待3秒
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                    }
                 }
             });
             stream.start();
@@ -222,5 +227,12 @@ public class Call {
         if (!API_URL.endsWith("/chat/completions"))
             if (API_URL.endsWith("/")) API_URL = API_URL + "chat/completions";
             else API_URL = API_URL + "/chat/completions";
+    }
+
+    private static class RunState {
+        private boolean state;
+        public RunState(boolean state) {
+            this.state = state;
+        }
     }
 }
