@@ -4,10 +4,6 @@ import org.balinhui.Core.JSON.Widgets.Message;
 
 public class Request {
     private String model;
-
-    /**
-     * 发送的消息
-     */
     private Message[] messages;
     private boolean stream = false;
     private double temperature = 1.0;
