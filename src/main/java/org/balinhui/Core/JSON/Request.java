@@ -9,26 +9,23 @@ public class Request {
      * 发送的消息
      */
     private Message[] messages;
-    private boolean stream;
-    private double temperature;
+    private boolean stream = false;
+    private double temperature = 1.0;
+    private int max_tokens = 4096;
 
     public Request(String model, Message... messages) {
         this.model = model;
-        this.temperature = 1.0;
-        this.stream = false;
         this.messages = messages;
     }
 
     public Request(String model, double temperature, Message... messages) {
         this.model = model;
         this.temperature = temperature;
-        this.stream = false;
         this.messages = messages;
     }
 
     public Request(String model, boolean stream, Message... messages) {
         this.model = model;
-        this.temperature = 1.0;
         this.stream = stream;
         this.messages = messages;
     }
@@ -70,5 +67,13 @@ public class Request {
 
     public void setMessages(Message[] messages) {
         this.messages = messages;
+    }
+
+    public int getMax_tokens() {
+        return max_tokens;
+    }
+
+    public void setMax_tokens(int max_tokens) {
+        this.max_tokens = max_tokens;
     }
 }

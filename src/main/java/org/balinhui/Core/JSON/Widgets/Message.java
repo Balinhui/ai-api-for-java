@@ -4,6 +4,7 @@ public class Message {
     public static final String USER = "user";
     public static final String SYSTEM = "system";
     public static final String ASSISTANT = "assistant";
+    public static final String TOOL = "tool";
     /**
      * 选择的角色，有<code>user</code>，<code>system</code>和<code>assistant</code>
      */
