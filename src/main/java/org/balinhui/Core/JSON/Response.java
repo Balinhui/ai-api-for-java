@@ -1,11 +1,17 @@
 package org.balinhui.Core.JSON;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.balinhui.Core.JSON.Widgets.Choice;
 import org.balinhui.Core.JSON.Widgets.Usage;
 
 /**
  * {@link  org.balinhui.Core.Call}返回的json的对象
  */
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Response {
     private String id;
     private String object;
@@ -15,57 +21,5 @@ public class Response {
     private Usage usage;
     private String system_fingerprint;
     private String service_tier;
-
-    public Response() {
-    }
-
-    public Response(String id, String object,
-                    int created,
-                    String model,
-                    Choice[] choices,
-                    Usage usage,
-                    String system_fingerprint,
-                    String service_tier) {
-        this.id = id;
-        this.object = object;
-        this.created = created;
-        this.model = model;
-        this.choices = choices;
-        this.usage = usage;
-        this.system_fingerprint = system_fingerprint;
-        this.service_tier = service_tier;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public String getObject() {
-        return object;
-    }
-
-    public int getCreated() {
-        return created;
-    }
-
-    public String getModel() {
-        return model;
-    }
-
-    public Choice[] getChoices() {
-        return choices;
-    }
-
-    public Usage getUsage() {
-        return usage;
-    }
-
-    public String getSystem_fingerprint() {
-        return system_fingerprint;
-    }
-
-    public String getService_tier() {
-        return service_tier;
-    }
 }
 

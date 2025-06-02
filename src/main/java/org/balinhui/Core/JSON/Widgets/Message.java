@@ -1,5 +1,9 @@
 package org.balinhui.Core.JSON.Widgets;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
 public class Message {
     public static final String USER = "user";
     public static final String SYSTEM = "system";
@@ -8,6 +12,7 @@ public class Message {
     /**
      * 选择的角色，有<code>user</code>，<code>system</code>和<code>assistant</code>
      */
+    @Setter
     private String role;
     private String content;
     private String reasoning_content;
@@ -33,37 +38,5 @@ public class Message {
         this.function_call = function_call;
         this.annotations = annotations;
         this.refusal = refusal;
-    }
-
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public String getReasoning_content() {
-        return reasoning_content;
-    }
-
-    public String getTool_calls() {
-        return tool_calls;
-    }
-
-    public String getFunction_call() {
-        return function_call;
-    }
-
-    public Annotations[] getAnnotations() {
-        return annotations;
-    }
-
-    public String getRefusal() {
-        return refusal;
     }
 }
