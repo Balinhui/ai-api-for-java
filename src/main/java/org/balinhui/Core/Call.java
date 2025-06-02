@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.concurrent.Flow;
 
 public class Call {
-    private final String NONE = "StreamIsOpen";
     public static final String DONE = "[DONE]";
     @Setter
     private String API_URL;
@@ -208,7 +207,7 @@ public class Call {
                 }
             });
             stream.start();
-            return NONE;
+            return "NONE";
         }
     }
 
