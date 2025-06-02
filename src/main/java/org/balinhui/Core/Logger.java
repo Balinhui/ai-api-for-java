@@ -1,5 +1,7 @@
 package org.balinhui.Core;
 
+import lombok.Getter;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -9,6 +11,7 @@ public class Logger {
     private static final String fileName = "ai.log.md";
     private String name = fileName;
     private boolean action = false;
+    @Getter
     private static final Logger logger = new Logger();
 
     static {
@@ -18,10 +21,6 @@ public class Logger {
     }
 
     private Logger() {
-    }
-
-    public static Logger getLogger() {
-        return logger;
     }
 
     public static String[] getLogList() {
