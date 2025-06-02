@@ -2,6 +2,7 @@ package org.balinhui.Core;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.Setter;
 import org.balinhui.Core.JSON.Request;
 import org.balinhui.Core.JSON.Response;
 import org.balinhui.Core.JSON.Widgets.Message;
@@ -18,11 +19,15 @@ import java.util.concurrent.Flow;
 public class Call {
     private final String NONE = "StreamIsOpen";
     public static final String DONE = "[DONE]";
+    @Setter
     private String API_URL;
+    @Setter
     private String API_KEY;
+    @Setter
     private Request request;
     private static final ObjectMapper mapper = new ObjectMapper();
     private final Store store = Store.getStore();
+    @Setter
     private boolean ableStore = false;
     private List<Response> responseList;
 
@@ -42,22 +47,6 @@ public class Call {
         this.API_URL = API_URL;
         this.API_KEY = API_KEY;
         this.request = request;
-    }
-
-    public void setAPI_URL(String API_URL) {
-        this.API_URL = API_URL;
-    }
-
-    public void setAPI_KEY(String API_KEY) {
-        this.API_KEY = API_KEY;
-    }
-
-    public void setRequest(Request request) {
-        this.request = request;
-    }
-
-    public void setAbleStore(boolean b) {
-        this.ableStore = b;
     }
 
     public boolean getAbleStore() {
