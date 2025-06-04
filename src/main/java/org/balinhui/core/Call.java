@@ -28,7 +28,7 @@ public class Call {
     private final Store store = Store.getStore();
     @Setter
     private boolean ableStore = false;
-    private List<Response> responseList;
+    private static List<Response> responseList;
 
     public Call() {
     }
@@ -68,6 +68,7 @@ public class Call {
      * @return 响应JSON的Java类
      */
     public List<Response> getResponseList() {
+        if (responseList != null) return responseList;
         //检查必须的项
         if (API_KEY == null) {
             if ((API_KEY = System.getenv("API_KEY")) == null)
