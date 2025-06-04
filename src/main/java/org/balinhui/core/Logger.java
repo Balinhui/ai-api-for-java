@@ -1,4 +1,4 @@
-package org.balinhui.Core;
+package org.balinhui.core;
 
 import lombok.Getter;
 

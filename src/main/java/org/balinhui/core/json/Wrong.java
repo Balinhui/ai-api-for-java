@@ -1,9 +1,9 @@
-package org.balinhui.Core.JSON;
+package org.balinhui.core.json;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.balinhui.Core.JSON.Widgets.Error;
+import org.balinhui.core.json.widgets.Error;
 
 @Getter
 @NoArgsConstructor

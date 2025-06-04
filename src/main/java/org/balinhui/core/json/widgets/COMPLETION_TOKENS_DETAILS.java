@@ -1,4 +1,4 @@
-package org.balinhui.Core.JSON.Widgets;
+package org.balinhui.core.json.widgets;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

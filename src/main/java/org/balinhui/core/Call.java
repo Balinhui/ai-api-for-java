@@ -1,12 +1,12 @@
-package org.balinhui.Core;
+package org.balinhui.core;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Setter;
-import org.balinhui.Core.JSON.Request;
-import org.balinhui.Core.JSON.Response;
-import org.balinhui.Core.JSON.Widgets.Message;
-import org.balinhui.Core.JSON.Wrong;
+import org.balinhui.core.json.Request;
+import org.balinhui.core.json.Response;
+import org.balinhui.core.json.widgets.Message;
+import org.balinhui.core.json.Wrong;
 
 import java.net.URI;
 import java.net.http.HttpClient;
