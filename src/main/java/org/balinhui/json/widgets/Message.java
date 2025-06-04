@@ -1,4 +1,4 @@
-package org.balinhui.core.json.widgets;
+package org.balinhui.json.widgets;
 
 import lombok.Getter;
 import lombok.Setter;

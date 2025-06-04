@@ -4,10 +4,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.NonNull;
 import lombok.Setter;
-import org.balinhui.core.json.Request;
-import org.balinhui.core.json.Response;
-import org.balinhui.core.json.widgets.Message;
-import org.balinhui.core.json.Wrong;
+import org.balinhui.json.Request;
+import org.balinhui.json.Response;
+import org.balinhui.json.widgets.Message;
+import org.balinhui.json.Wrong;
 
 import java.net.URI;
 import java.net.http.HttpClient;

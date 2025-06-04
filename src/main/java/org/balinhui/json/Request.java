@@ -1,8 +1,8 @@
-package org.balinhui.core.json;
+package org.balinhui.json;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.balinhui.core.json.widgets.Message;
+import org.balinhui.json.widgets.Message;
 
 @Getter
 @Setter
