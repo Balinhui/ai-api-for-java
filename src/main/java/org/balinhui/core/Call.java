@@ -2,6 +2,7 @@ package org.balinhui.core;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.NonNull;
 import lombok.Setter;
 import org.balinhui.core.json.Request;
 import org.balinhui.core.json.Response;
@@ -33,16 +34,19 @@ public class Call {
     public Call() {
     }
 
-    public Call(Request request) {
+    public Call(@NonNull Request request) {
         this.request = request;
     }
 
-    public Call(String API_URL, String API_KEY) {
+    public Call(@NonNull String API_URL,
+                @NonNull String API_KEY) {
         this.API_URL = API_URL;
         this.API_KEY = API_KEY;
     }
 
-    public Call(String API_URL, String API_KEY, Request request) {
+    public Call(@NonNull String API_URL,
+                @NonNull String API_KEY,
+                @NonNull Request request) {
         this.API_URL = API_URL;
         this.API_KEY = API_KEY;
         this.request = request;
@@ -57,7 +61,7 @@ public class Call {
      * @param request 请求
      * @return 响应JSON的Java类
      */
-    public List<Response> getResponseList(Request request) {
+    public List<Response> getResponseList(@NonNull Request request) {
         if (this.request != request)
             this.request = request;
         return getResponseList();
@@ -69,20 +73,15 @@ public class Call {
      */
     public List<Response> getResponseList() {
         if (responseList != null) return responseList;
-        //检查必须的项
-        if (API_KEY == null) {
-            if ((API_KEY = System.getenv("API_KEY")) == null)
-                throw new RuntimeException("API_KEY的值为null");
-        }
-        if (API_URL == null) throw new RuntimeException("API_URL的值为null");
-        if (request == null) throw new RuntimeException("没有初始化Request");
+        checkDisposition();//检查必须的项
         reviseURL();//为URL后加上特定分页
 
         String _send = "null";//发送的JSON
         String _return = "null";//返回的JSON
+
+        if (ableStore) storeMessage();
+        responseList = new ArrayList<>();
         try {
-            if (ableStore) storeMessage();
-            responseList = new ArrayList<>();
             _return = callApi(_send = mapper.writeValueAsString(request));
             if (!this.request.getStream()) {
                 //将响应的JSON解析成相应的Java类
@@ -223,5 +222,14 @@ public class Call {
         public RunState(boolean state) {
             this.state = state;
         }
+    }
+
+    private void checkDisposition() {
+        if (API_KEY == null) {
+            if ((API_KEY = System.getenv("API_KEY")) == null)
+                throw new RuntimeException("API_KEY的值为null");
+        }
+        if (API_URL == null) throw new RuntimeException("API_URL的值为null");
+        if (request == null) throw new RuntimeException("没有初始化Request");
     }
 }
