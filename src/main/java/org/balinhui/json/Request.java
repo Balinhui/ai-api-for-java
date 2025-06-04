@@ -44,6 +44,16 @@ public class Request {
         return stream;
     }
 
+    public Request writeModel(String model) {
+        this.model = model;
+        return this;
+    }
+
+    public Request writeMessages(Message... messages) {
+        this.messages = messages;
+        return this;
+    }
+
     public Request writeStream(boolean stream) {
         this.stream = stream;
         return this;
