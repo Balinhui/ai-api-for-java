@@ -13,6 +13,9 @@ public class Request {
     private double temperature = 1.0;
     private int max_tokens = 4096;
 
+    public Request() {
+    }
+
     public Request(String model, Message... messages) {
         this.model = model;
         this.messages = messages;
@@ -39,5 +42,20 @@ public class Request {
 
     public boolean getStream() {
         return stream;
+    }
+
+    public Request writeStream(boolean stream) {
+        this.stream = stream;
+        return this;
+    }
+
+    public Request writeTemperature(double temperature) {
+        this.temperature = temperature;
+        return this;
+    }
+
+    public Request writeMax_tokens(int max_tokens) {
+        this.max_tokens = max_tokens;
+        return this;
     }
 }

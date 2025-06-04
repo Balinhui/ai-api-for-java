@@ -231,5 +231,7 @@ public class Call {
         }
         if (API_URL == null) throw new RuntimeException("API_URL的值为null");
         if (request == null) throw new RuntimeException("没有初始化Request");
+        if (request.getModel() == null) throw new RuntimeException("未指定model");
+        if (request.getMessages() == null) throw new RuntimeException("Request中没有Messages");
     }
 }
