@@ -81,6 +81,7 @@ public class Call {
 
         if (ableStore) storeMessage();
         responseList = new ArrayList<>();
+
         try {
             _return = callApi(_send = mapper.writeValueAsString(request));
             if (!this.request.getStream()) {
