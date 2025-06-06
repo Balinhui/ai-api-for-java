@@ -81,12 +81,9 @@ public class UseAPI {
         Request request = new Request("a model", true, system, user);
         Call call = new Call("Your API_URL", "Your API_KEY", request);
         ResponseList<Response> list = call.getResponseList(response -> {
-            if (response.getId().equals(Call.DONE)) {
-                System.out.println();
-            } else {
-                System.out.print(response.getChoices()[0].getDelta().getContent());
-            }
+            System.out.print(response.getChoices()[0].getDelta().getContent());
         });
+        System.out.println();
     }
 }
 ```

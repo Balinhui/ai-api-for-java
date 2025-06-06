@@ -17,7 +17,6 @@ import java.net.http.HttpResponse;
 import java.util.concurrent.Flow;
 
 public class Call {
-    public static final String DONE = "[DONE]";
     @Setter
     private String API_URL;
     @Setter
@@ -177,9 +176,9 @@ public class Call {
                             // 处理每个数据块
                             if (!item.isEmpty() && !item.equals("data: [DONE]")) {
                                 try {
-                                    responseList.add(
-                                            mapper.readValue(item.substring(6).trim(), Response.class)
-                                    );
+                                    Response get = mapper.readValue(item.substring(6).trim(), Response.class);
+                                    if (responseList.isEmpty() || responseList.getFirst().getId().equals(get.getId()))
+                                        responseList.add(get);
                                 } catch (JsonProcessingException e) {
                                     throw new RuntimeException(e);
                                 }
@@ -202,8 +201,6 @@ public class Call {
                                 Message message = new Message(Message.ASSISTANT, sb.toString());
                                 storeMessage(message);
                             }
-                            responseList.add(new Response(DONE, "", 0,
-                                    "", null, null, "", ""));
                             runState.state = false;
                         }
                     }));
@@ -211,7 +208,7 @@ public class Call {
             // 保持请求线程运行，等待响应
             while (runState.state) {
                 try {
-                    Thread.sleep(1000); // 等待1秒
+                    Thread.sleep(900); // 等待900毫秒
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                 }
