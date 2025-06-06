@@ -2,12 +2,12 @@ package org.balinhui.core;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.NonNull;
 import lombok.Setter;
 import org.balinhui.json.Request;
 import org.balinhui.json.Response;
 import org.balinhui.json.widgets.Message;
 import org.balinhui.json.Wrong;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.net.URI;
@@ -33,19 +33,19 @@ public class Call {
     public Call() {
     }
 
-    public Call(@NonNull Request request) {
+    public Call(@NotNull Request request) {
         this.request = request;
     }
 
-    public Call(@NonNull String API_URL,
-                @NonNull String API_KEY) {
+    public Call(@NotNull String API_URL,
+                @NotNull String API_KEY) {
         this.API_URL = API_URL;
         this.API_KEY = API_KEY;
     }
 
-    public Call(@NonNull String API_URL,
-                @NonNull String API_KEY,
-                @NonNull Request request) {
+    public Call(@NotNull String API_URL,
+                @NotNull String API_KEY,
+                @NotNull Request request) {
         this.API_URL = API_URL;
         this.API_KEY = API_KEY;
         this.request = request;
@@ -68,7 +68,7 @@ public class Call {
      * @param request 用户的请求
      * @return 响应JSON的Java类
      */
-    public final ResponseList<Response> getResponseList(@NonNull Request request,
+    public final ResponseList<Response> getResponseList(@NotNull Request request,
                                                         @Nullable OnAddAction<Response> onAddAction) {
         if (this.request != request)
             this.request = request;
