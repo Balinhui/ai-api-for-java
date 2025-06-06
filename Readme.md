@@ -96,3 +96,6 @@ public class UseAPI {
     }
 }
 ```
+
+# 注意
+每次调用Call中的getResponseList()等方法时，都会创建一个新请求并发送，请不要将此放入循环中
