@@ -1,6 +1,6 @@
 # 更新：
 
-以前开启stream需要非常繁琐的处理：
+以前开启stream需要非常繁琐的处理(已不可用)：
 ```java
     ResponseList<Response> list = call.getResponseList();
     String old = "";
@@ -54,6 +54,11 @@ public class UseAPI {
         Call call = new Call("Your API_URL", "Your API_KEY", request);
         ResponseList<Response> responseList = call.getResponseList();
         System.out.println(responseList.getFirst().getChoices()[0].getMessage().getContent());
+        
+        //或者
+        ResponseList<Response> responseList1 = call.getResponseList(response -> {
+            System.out.println(response.getChoices()[0].getMessage().getContent());
+        });
     }
 }
 ```
@@ -75,24 +80,13 @@ public class UseAPI {
         Message user = new Message(Message.USER, "你好");
         Request request = new Request("a model", true, system, user);
         Call call = new Call("Your API_URL", "Your API_KEY", request);
-        ResponseList<Response> list = call.getResponseList();
-        String old = "";
-        while (true) {
-            if (!list.isEmpty()) {
-                if (list.getLast().getChoices() == null) {
-                    System.out.println();
-                    break;
-                } else {
-                    String content = list.getLast().getChoices()[0].getDelta().getContent();
-                    if (!content.equals(old)) {
-                        old = content;
-                        System.out.print(content);
-                    }
-                }
+        ResponseList<Response> list = call.getResponseList(response -> {
+            if (response.getId().equals(Call.DONE)) {
+                System.out.println();
             } else {
-                System.out.print("waiting...\r");
+                System.out.print(response.getChoices()[0].getDelta().getContent());
             }
-        }
+        });
     }
 }
 ```
