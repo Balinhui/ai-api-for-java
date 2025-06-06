@@ -8,6 +8,7 @@ import org.balinhui.json.Request;
 import org.balinhui.json.Response;
 import org.balinhui.json.widgets.Message;
 import org.balinhui.json.Wrong;
+import org.jetbrains.annotations.Nullable;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -59,17 +60,18 @@ public class Call {
      * @param request 用户的请求
      * @return 响应JSON的Java类
      */
-    public final ResponseList<Response> getResponseList(@NonNull Request request) {
+    public final ResponseList<Response> getResponseList(@NonNull Request request,
+                                                        @Nullable OnAddAction<Response> onAddAction) {
         if (this.request != request)
             this.request = request;
-        return getResponseList();
+        return getResponseList(onAddAction);
     }
 
     /**
      * 向<code>API_URL</code>发送请求，获得Java类
      * @return 响应JSON的Java类
      */
-    public final ResponseList<Response> getResponseList() {
+    public final ResponseList<Response> getResponseList(@Nullable OnAddAction<Response> onAddAction) {
         if (responseList != null) return responseList;
         checkDisposition();//检查必须的项
         reviseURL();//为URL后加上特定分页
@@ -78,12 +80,7 @@ public class Call {
         String _return = "null";//返回的JSON
 
         if (ableStore) storeMessage();
-        responseList = new ResponseList<>() {
-            @Override
-            public void onAdd(Response response) {
-                Call.this.onAdd(response);
-            }
-        };
+        responseList = new ResponseList<>(onAddAction);
 
         try {
             _return = callApi(_send = mapper.writeValueAsString(request));
@@ -238,6 +235,4 @@ public class Call {
         if (request.getModel() == null) throw new RuntimeException("未指定model");
         if (request.getMessages() == null) throw new RuntimeException("Request中没有Messages");
     }
-
-    public void onAdd(Response response) {}
 }

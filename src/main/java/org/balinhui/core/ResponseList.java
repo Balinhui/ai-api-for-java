@@ -1,14 +1,24 @@
 package org.balinhui.core;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.*;
 
-public class ResponseList<E> implements Iterable<E> {
+public class ResponseList<E> implements Iterable<E>, OnAddAction<E> {
     private int objectLength = 10;
     private Object[] objects = new Object[objectLength];
     private int pointer = -1;
+    private OnAddAction<E> onAddAction;
+
+    public ResponseList() {}
+
+    public ResponseList(OnAddAction<E> addAction) {
+        this.onAddAction = addAction;
+    }
 
     public final void add(E e) {
-        if (pointer >= objects.length - 1) expansion();
+        if (pointer >= objects.length - 1)
+            expansion();
         objects[pointer + 1] = e;
         pointer++;
         onAdd(e);
@@ -36,7 +46,12 @@ public class ResponseList<E> implements Iterable<E> {
         return pointer == -1;
     }
 
-    public void onAdd(E e) {}
+    @Override
+    public void onAdd(E e) {
+        if (onAddAction != null) {
+            onAddAction.onAdd(e);
+        }
+    }
 
     private void expansion() {
         objectLength += 10;
@@ -50,7 +65,7 @@ public class ResponseList<E> implements Iterable<E> {
     }
 
     @Override
-    public final Iterator<E> iterator() {
+    public final @NotNull Iterator<E> iterator() {
         return new Iterator<>() {
             int cursor;
             int lastRet = -1;
