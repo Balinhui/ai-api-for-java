@@ -108,7 +108,7 @@ public class Call {
             } catch (JsonProcessingException ex) {
                 System.out.println("发送: " + _send);
                 System.out.println("接收: " + _return);
-                throw new RuntimeException(ex);
+                throw new RuntimeException(e);
             }
         }
     }
@@ -160,61 +160,62 @@ public class Call {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             return response.body();
         } else {
+            //已打开Stream流
             final RunState runState = new RunState(true);
-            //已打开Stream，开一个线程
-            Thread stream = new Thread(() -> {
-                client.sendAsync(request, HttpResponse.BodyHandlers.fromLineSubscriber(
-                        new Flow.Subscriber<>() {
-                            private Flow.Subscription subscription;
+            client.sendAsync(request, HttpResponse.BodyHandlers.fromLineSubscriber(
+                    new Flow.Subscriber<>() {
+                        private Flow.Subscription subscription;
 
-                            @Override
-                            public void onSubscribe(Flow.Subscription subscription) {
-                                this.subscription = subscription;
-                                subscription.request(1); // 请求第一个数据项
-                            }
+                        @Override
+                        public void onSubscribe(Flow.Subscription subscription) {
+                            this.subscription = subscription;
+                            subscription.request(1); // 请求第一个数据项
+                        }
 
-                            @Override
-                            public void onNext(String item) {
-                                // 处理每个数据块
-                                if (!item.isEmpty() && !item.equals("data: [DONE]")) {
-                                    try {
-                                        responseList.add(mapper.readValue(item.substring(6).trim(), Response.class));
-                                    } catch (JsonProcessingException e) {
-                                        throw new RuntimeException(e);
-                                    }
+                        @Override
+                        public void onNext(String item) {
+                            // 处理每个数据块
+                            if (!item.isEmpty() && !item.equals("data: [DONE]")) {
+                                try {
+                                    responseList.add(
+                                            mapper.readValue(item.substring(6).trim(), Response.class)
+                                    );
+                                } catch (JsonProcessingException e) {
+                                    throw new RuntimeException(e);
                                 }
-                                subscription.request(1); // 请求下一个数据项
                             }
+                            subscription.request(1); // 请求下一个数据项
+                        }
 
-                            @Override
-                            public void onError(Throwable throwable) {
-                                System.err.println("错误: " + throwable.getMessage());
-                            }
+                        @Override
+                        public void onError(Throwable throwable) {
+                            System.err.println("错误: " + throwable.getMessage());
+                        }
 
-                            @Override
-                            public void onComplete() {
+                        @Override
+                        public void onComplete() {
+                            if (ableStore) {
                                 StringBuilder sb = new StringBuilder();
                                 for (Response response : responseList) {
                                     sb.append(response.getChoices()[0].getDelta().getContent());
                                 }
                                 Message message = new Message(Message.ASSISTANT, sb.toString());
-                                if (ableStore) storeMessage(message);
-                                responseList.add(new Response(DONE, "", 0,
-                                        "", null, null, "", ""));
-                                runState.state = false;
+                                storeMessage(message);
                             }
-                        }));
+                            responseList.add(new Response(DONE, "", 0,
+                                    "", null, null, "", ""));
+                            runState.state = false;
+                        }
+                    }));
 
-                // 保持请求线程运行，等待响应
-                while (runState.state) {
-                    try {
-                        Thread.sleep(3000); // 等待3秒
-                    } catch (InterruptedException e) {
-                        Thread.currentThread().interrupt();
-                    }
+            // 保持请求线程运行，等待响应
+            while (runState.state) {
+                try {
+                    Thread.sleep(1000); // 等待1秒
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
                 }
-            });
-            stream.start();
+            }
             return "NONE";
         }
     }
