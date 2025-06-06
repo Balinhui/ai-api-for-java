@@ -28,7 +28,7 @@ public class Call {
     private final Store store = Store.getStore();
     @Setter
     private boolean ableStore = false;
-    private static ResponseList<Response> responseList;
+    private ResponseList<Response> responseList;
 
     public Call() {
     }
@@ -80,7 +80,6 @@ public class Call {
      * @return 响应JSON的Java类
      */
     public final ResponseList<Response> getResponseList(@Nullable OnAddAction<Response> onAddAction) {
-        if (responseList != null) return responseList;
         checkDisposition();//检查必须的项
         reviseURL();//为URL后加上特定分页
 
@@ -242,5 +241,10 @@ public class Call {
         if (request == null) throw new RuntimeException("没有初始化Request");
         if (request.getModel() == null) throw new RuntimeException("未指定model");
         if (request.getMessages() == null) throw new RuntimeException("Request中没有Messages");
+    }
+
+    @Override
+    public String toString() {
+        return "API_URL:" + API_URL + " API_KEY:" + API_KEY + " ableStore:" + ableStore;
     }
 }
