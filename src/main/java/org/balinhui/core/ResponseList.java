@@ -1,6 +1,7 @@
 package org.balinhui.core;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
@@ -12,7 +13,7 @@ public class ResponseList<E> implements Iterable<E>, OnAddAction<E> {
 
     public ResponseList() {}
 
-    public ResponseList(OnAddAction<E> addAction) {
+    public ResponseList(@Nullable OnAddAction<E> addAction) {
         this.onAddAction = addAction;
     }
 

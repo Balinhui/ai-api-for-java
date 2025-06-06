@@ -57,6 +57,14 @@ public class Call {
 
     /**
      * 向<code>API_URL</code>发送请求，获得Java类
+     * @return 响应JSON的Java类
+     */
+    public final ResponseList<Response> getResponseList() {
+        return getResponseList(null);
+    }
+
+    /**
+     * 向<code>API_URL</code>发送请求，获得Java类
      * @param request 用户的请求
      * @return 响应JSON的Java类
      */
