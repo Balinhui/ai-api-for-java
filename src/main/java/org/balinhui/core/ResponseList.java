@@ -88,4 +88,17 @@ public class ResponseList<E> implements Iterable<E>, OnAddAction<E> {
             }
         };
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[");
+        for (Object object : objects) {
+            if (object != null)
+                sb.append(object).append(",");
+        }
+        sb.deleteCharAt(sb.length() - 1);
+        sb.append("]");
+        return sb.toString();
+    }
 }
