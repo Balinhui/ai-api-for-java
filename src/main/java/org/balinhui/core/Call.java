@@ -13,8 +13,6 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.Flow;
 
 public class Call {
@@ -29,7 +27,7 @@ public class Call {
     private final Store store = Store.getStore();
     @Setter
     private boolean ableStore = false;
-    private static List<Response> responseList;
+    private static ResponseList<Response> responseList;
 
     public Call() {
     }
@@ -52,7 +50,7 @@ public class Call {
         this.request = request;
     }
 
-    public boolean getAbleStore() {
+    public final boolean getAbleStore() {
         return ableStore;
     }
 
@@ -61,7 +59,7 @@ public class Call {
      * @param request 用户的请求
      * @return 响应JSON的Java类
      */
-    public List<Response> getResponseList(@NonNull Request request) {
+    public final ResponseList<Response> getResponseList(@NonNull Request request) {
         if (this.request != request)
             this.request = request;
         return getResponseList();
@@ -71,7 +69,7 @@ public class Call {
      * 向<code>API_URL</code>发送请求，获得Java类
      * @return 响应JSON的Java类
      */
-    public List<Response> getResponseList() {
+    public final ResponseList<Response> getResponseList() {
         if (responseList != null) return responseList;
         checkDisposition();//检查必须的项
         reviseURL();//为URL后加上特定分页
@@ -80,7 +78,12 @@ public class Call {
         String _return = "null";//返回的JSON
 
         if (ableStore) storeMessage();
-        responseList = new ArrayList<>();
+        responseList = new ResponseList<>() {
+            @Override
+            public void onAdd(Response response) {
+                Call.this.onAdd(response);
+            }
+        };
 
         try {
             _return = callApi(_send = mapper.writeValueAsString(request));
@@ -235,4 +238,6 @@ public class Call {
         if (request.getModel() == null) throw new RuntimeException("未指定model");
         if (request.getMessages() == null) throw new RuntimeException("Request中没有Messages");
     }
+
+    public void onAdd(Response response) {}
 }
