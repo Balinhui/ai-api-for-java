@@ -23,15 +23,10 @@
 ```
 现在只需要：
 ```java
-    boolean b = true;
     call.getResponseList(response -> {
-        if (response.getId().equals(Call.DONE)) {
-            System.out.println();
-            b = false;
-        } else
-            System.out.print(response.getChoices()[0].getDelta().getContent());
-        });
-    while(b) Thread.sleep(200);
+        System.out.print(response.getChoices()[0].getDelta().getContent());
+    });
+    System.out.println();
 ```
 # 使用列：
 
