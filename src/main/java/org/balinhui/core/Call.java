@@ -79,7 +79,7 @@ public class Call {
      * @return 响应JSON的Java类
      */
     public final ResponseList<Response> getResponseList(@Nullable OnAddAction<Response> onAddAction) {
-        checkDisposition();//检查必须的项
+        checkConfig();//检查必须的项
         reviseURL();//为URL后加上特定分页
 
         String _send = "null";//发送的JSON
@@ -230,7 +230,7 @@ public class Call {
         }
     }
 
-    private void checkDisposition() {
+    private void checkConfig() {
         if (API_KEY == null) {
             if ((API_KEY = System.getenv("API_KEY")) == null)
                 throw new RuntimeException("API_KEY的值为null");
