@@ -26,13 +26,9 @@ public class Response {
     @Override
     public String toString() {
         if (choices[0].getDelta() == null)
-            return "id:" + id +
-              " model:" + model +
-                " message:" + choices[0].getMessage().getContent();
+            return choices[0].getMessage().getContent();
         else
-            return "id:" + id +
-                    " model:" + model +
-                    " message:" + choices[0].getDelta().getContent();
+            return choices[0].getDelta().getContent();
     }
 }
 
