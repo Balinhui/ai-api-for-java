@@ -2,7 +2,7 @@
 
 以前开启stream需要非常繁琐的处理(已不可用)：
 ```java
-    ResponseList<Response> list = call.getResponseList();
+    ResponseList<Response> list = client.getResponseList();
     String old = "";
     while (true) {
         if (!list.isEmpty()) {
@@ -23,7 +23,7 @@
 ```
 现在只需要：
 ```java
-    call.getResponseList(response -> {
+    client.getResponseList(response -> {
         System.out.print(response.getChoices()[0].getDelta().getContent());
     });
     System.out.println();
@@ -33,25 +33,23 @@
 ## 普通调用，未开启stream流
 
 ```java
-import org.balinhui.core.Call;
+import org.balinhui.core.Client;
 import org.balinhui.core.ResponseList;
 import org.balinhui.json.Request;
 import org.balinhui.json.Response;
 import org.balinhui.json.widgets.Message;
-
-import java.util.List;
 
 public class UseAPI {
     public static void main(String[] args) {
         Message system = new Message(Message.SYSTEM, "你是一个猫娘");
         Message user = new Message(Message.USER, "你好");
         Request request = new Request("a model", system, user);
-        Call call = new Call("Your API_URL", "Your API_KEY", request);
-        ResponseList<Response> responseList = call.getResponseList();
+        Client client = new Client("Your API_URL", "Your API_KEY", request);
+        ResponseList<Response> responseList = client.getResponseList();
         System.out.println(responseList.getFirst().getChoices()[0].getMessage().getContent());
-        
+
         //或者
-        ResponseList<Response> responseList1 = call.getResponseList(response -> {
+        ResponseList<Response> responseList1 = client.getResponseList(response -> {
             System.out.println(response.getChoices()[0].getMessage().getContent());
         });
     }
@@ -61,8 +59,8 @@ public class UseAPI {
 ## 普通调用，开启stream流
 
 ```java
-import org.balinhui.core.Call;
-import org.balinhui.core.ResponseList;
+import org.balinhui.core.Client;
+import org.balinhui.core.Client;import org.balinhui.core.Client;import org.balinhui.core.ResponseList;
 import org.balinhui.json.Request;
 import org.balinhui.json.Response;
 import org.balinhui.json.widgets.Message;
@@ -74,8 +72,8 @@ public class UseAPI {
         Message system = new Message(Message.SYSTEM, "你是一个猫娘");
         Message user = new Message(Message.USER, "你好");
         Request request = new Request("a model", true, system, user);
-        Call call = new Call("Your API_URL", "Your API_KEY", request);
-        ResponseList<Response> list = call.getResponseList(response -> {
+        Client client = new Client("Your API_URL", "Your API_KEY", request);
+        ResponseList<Response> list = client.getResponseList(response -> {
             System.out.print(response.getChoices()[0].getDelta().getContent());
         });
         System.out.println();

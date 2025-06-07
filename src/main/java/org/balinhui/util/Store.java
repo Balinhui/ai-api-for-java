@@ -1,4 +1,4 @@
-package org.balinhui.core;
+package org.balinhui.util;
 
 import org.balinhui.json.widgets.Message;
 

@@ -3,11 +3,12 @@ package org.balinhui.json;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.balinhui.core.Client;
 import org.balinhui.json.widgets.Choice;
 import org.balinhui.json.widgets.Usage;
 
 /**
- * {@link  org.balinhui.core.Call}返回的json的对象
+ * {@link  Client}返回的json的对象
  */
 @Getter
 @NoArgsConstructor
