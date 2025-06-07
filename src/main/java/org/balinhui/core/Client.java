@@ -7,8 +7,6 @@ import org.balinhui.json.Request;
 import org.balinhui.json.Response;
 import org.balinhui.json.widgets.Message;
 import org.balinhui.json.Wrong;
-import org.balinhui.service.AfterServiceType;
-import org.balinhui.service.ServiceType;
 import org.balinhui.util.Logger;
 import org.balinhui.util.Store;
 import org.jetbrains.annotations.NotNull;
@@ -32,8 +30,6 @@ public class Client {
     @Setter
     private boolean ableStore = false;
     private ResponseList<Response> responseList;
-    private String service = "chat";
-    private String afterService = "completions";
 
     public Client() {
     }
@@ -224,21 +220,8 @@ public class Client {
     }
 
     private void reviseURL() {
-        if (API_URL.endsWith("/")) API_URL = API_URL + service + "/" + afterService;
-        else API_URL = API_URL + "/" + service + "/" + afterService;
-    }
-
-    public void setService(ServiceType s) {
-        switch (s) {
-            case CHAT -> service = "chat";
-            case BETA -> service = "beta";
-        }
-    }
-
-    public void setAfterService(AfterServiceType s) {
-        switch (s) {
-            case COMPLETIONS -> afterService = "completions";
-        }
+        if (API_URL.endsWith("/")) API_URL = API_URL + "chat/completions";
+        else API_URL = API_URL + "/chat/completions";
     }
 
     private static class RunState {
