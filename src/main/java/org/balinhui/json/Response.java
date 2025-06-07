@@ -8,6 +8,8 @@ import org.balinhui.json.widgets.Choice;
 import org.balinhui.json.widgets.STREAM_OPTIONS;
 import org.balinhui.json.widgets.Usage;
 
+import java.util.Objects;
+
 /**
  * {@link  Client}返回的json的对象
  */
@@ -24,6 +26,18 @@ public class Response {
     private String system_fingerprint;
     private String service_tier;
     private STREAM_OPTIONS stream_options;
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Response response = (Response) o;
+        return Objects.equals(id, response.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
 
     @Override
     public String toString() {

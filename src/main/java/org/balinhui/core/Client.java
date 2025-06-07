@@ -179,7 +179,7 @@ public class Client {
                             if (!item.isEmpty() && !item.equals("data: [DONE]")) {
                                 try {
                                     Response get = mapper.readValue(item.substring(6).trim(), Response.class);
-                                    if (responseList.isEmpty() || responseList.getFirst().getId().equals(get.getId()))
+                                    if (responseList.isEmpty() || responseList.getFirst().equals(get))
                                         responseList.add(get);
                                 } catch (JsonProcessingException e) {
                                     throw new RuntimeException(e);

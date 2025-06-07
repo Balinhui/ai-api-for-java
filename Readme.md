@@ -23,9 +23,7 @@
 ```
 现在只需要：
 ```java
-    client.getResponseList(response -> {
-        System.out.print(response.getChoices()[0].getDelta().getContent());
-    });
+    client.getResponseList(System.out::print);
     System.out.println();
 ```
 # 使用列：
@@ -49,9 +47,8 @@ public class UseAPI {
         System.out.println(responseList.getFirst().getChoices()[0].getMessage().getContent());
 
         //或者
-        ResponseList<Response> responseList1 = client.getResponseList(response -> {
-            System.out.println(response.getChoices()[0].getMessage().getContent());
-        });
+        ResponseList<Response> responseList1 = client.getResponseList(System.out::print);
+        System.out.println();
     }
 }
 ```
@@ -73,9 +70,7 @@ public class UseAPI {
         Message user = new Message(Message.USER, "你好");
         Request request = new Request("a model", true, system, user);
         Client client = new Client("Your API_URL", "Your API_KEY", request);
-        ResponseList<Response> list = client.getResponseList(response -> {
-            System.out.print(response.getChoices()[0].getDelta().getContent());
-        });
+        ResponseList<Response> list = client.getResponseList(response -> System.out.print(response.getChoices()[0].getDelta().getContent()));
         System.out.println();
     }
 }
