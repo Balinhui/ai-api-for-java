@@ -13,4 +13,7 @@ public class CONTENT_FILTER_RESULTS {
     private Hate self_harm;
     private Hate sexual;
     private Hate violence;
+
+    private Protected protected_material_code;
+    private Protected protected_material_text;
 }
