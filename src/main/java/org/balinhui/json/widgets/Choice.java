@@ -13,4 +13,5 @@ public class Choice {
     private Delta delta;
     private String logprobs;
     private String finish_reason;
+    private CONTENT_FILTER_RESULTS content_filter_results;
 }

@@ -7,9 +7,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Delta {
-    private String role;
-    private String content;
-    private String reasoning_content;
-    private String refusal;
+public class STREAM_OPTIONS {
+    private boolean include_usage;
 }

@@ -7,9 +7,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Delta {
-    private String role;
-    private String content;
-    private String reasoning_content;
-    private String refusal;
+public class Hate {
+    private boolean filtered;
+    private String severity;
 }

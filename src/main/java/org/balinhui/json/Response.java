@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.balinhui.core.Client;
 import org.balinhui.json.widgets.Choice;
+import org.balinhui.json.widgets.STREAM_OPTIONS;
 import org.balinhui.json.widgets.Usage;
 
 /**
@@ -22,6 +23,7 @@ public class Response {
     private Usage usage;
     private String system_fingerprint;
     private String service_tier;
+    private STREAM_OPTIONS stream_options;
 
     @Override
     public String toString() {

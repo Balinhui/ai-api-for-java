@@ -106,7 +106,7 @@ public class Client {
                     throw new RuntimeException(wrongInfo.getError().getMessage());
                 throw new RuntimeException("API_URL错误。\nevent_id:" + wrongInfo.getEvent_id() +
                         ".\nerror_msg:" + wrongInfo.getError_msg());
-            } catch (JsonProcessingException ex) {
+            } catch (Exception ex) {
                 System.out.println("发送: " + _send);
                 System.out.println("接收: " + _return);
                 throw new RuntimeException(e);
