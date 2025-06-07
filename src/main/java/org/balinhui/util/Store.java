@@ -1,5 +1,6 @@
 package org.balinhui.util;
 
+import lombok.Getter;
 import org.balinhui.json.widgets.Message;
 
 import java.util.ArrayList;
@@ -8,14 +9,11 @@ import java.util.List;
 
 public class Store {
     private final List<Message> dialogues;
+    @Getter
     private static final Store store = new Store();
 
     private Store() {
         this.dialogues = new ArrayList<>();
-    }
-
-    public static Store getStore() {
-        return store;
     }
 
     public void add(Message... messages) {
