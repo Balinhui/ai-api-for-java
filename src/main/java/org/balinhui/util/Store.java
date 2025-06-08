@@ -10,7 +10,7 @@ import java.util.List;
 public class Store {
     public static final String roleSeparate = "<ROLE>";
     public static final String contentSeparate = "<CONT>";
-    private final List<Message> dialogues = new ArrayList<>();;
+    private final List<Message> dialogues = new ArrayList<>();
     @Getter
     private static final Store store = new Store();
 
