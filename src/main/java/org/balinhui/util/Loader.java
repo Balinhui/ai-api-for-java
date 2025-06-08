@@ -6,11 +6,13 @@ import org.balinhui.json.widgets.Message;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class Loader extends LogFile {
+    private String name;
     @Getter
     private static final Loader loader = new Loader();
     private int pos;
@@ -20,10 +22,11 @@ public class Loader extends LogFile {
     public Message[] load(int i) {
         String[] logList = getLogList();
         Objects.checkIndex(i, logList.length);
-        File file = new File(getLogDirectory(), logList[i]);
+        name = logList[i];
+        File chooseFile = new File(getLogDirectory(), logList[i]);
         StringBuilder sb = new StringBuilder();
         try {
-            FileReader fileReader = new FileReader(file);
+            FileReader fileReader = new FileReader(chooseFile);
             char[] charBuff = {1};
             while (fileReader.read(charBuff) != -1) {
                 sb.append(charBuff);
@@ -32,7 +35,9 @@ public class Loader extends LogFile {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return token(sb.toString());
+        Message[] token = token(sb.toString());
+        reviseLogger();
+        return token;
     }
 
     private Message[] token(String in) {
@@ -72,5 +77,19 @@ public class Loader extends LogFile {
             return false;
         }
         return false;
+    }
+
+    private void reviseLogger() {
+        try {
+            Class<?> cls = Class.forName("org.balinhui.util.Logger");
+            Field name = cls.getDeclaredField("name");
+            Field action = cls.getDeclaredField("action");
+            name.setAccessible(true);
+            action.setAccessible(true);
+            name.set(Logger.getLogger(), this.name);
+            action.setBoolean(Logger.getLogger(), true);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }
