@@ -7,31 +7,20 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Objects;
 
-public class Logger {
-    private static final File logFile = new File("history");
-    private static final String fileName = "ai.log.md";
-    private String name = fileName;
+public class Logger extends LogFile {
+    private String name = getFileName();
     private boolean action = false;
     @Getter
     private static final Logger logger = new Logger();
 
-    static {
-        if (!logFile.isDirectory()) {
-            if (!logFile.mkdir()) throw new RuntimeException("无法创建文件夹");
-        }
-    }
-
     private Logger() {
     }
 
-    public static String[] getLogList() {
-        return logFile.list();
-    }
 
     public void log(String log) {
         try {
             renameFile();
-            FileWriter fileWriter = new FileWriter(logFile + "\\" + name);
+            FileWriter fileWriter = new FileWriter(getLogDirectory() + File.separator + name);
             fileWriter.write(log);
             fileWriter.close();
         } catch (IOException e) {
@@ -43,14 +32,14 @@ public class Logger {
         if(action) return;
         int i = 1;
         while (equalName()) {
-            name = "(" + i + ")" + fileName;
+            name = "(" + i + ")" + getFileName();
             i++;
         }
         action = true;
     }
 
     private boolean equalName() {
-        for (String s : Objects.requireNonNull(logFile.list()))
+        for (String s : Objects.requireNonNull(getLogDirectory().list()))
             if (s.equals(name)) return true;
         return false;
     }
