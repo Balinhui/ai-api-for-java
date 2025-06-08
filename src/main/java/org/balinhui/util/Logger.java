@@ -5,6 +5,7 @@ import lombok.Getter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Objects;
 
 public class Logger {
     private static final File logFile = new File("history");
@@ -41,17 +42,16 @@ public class Logger {
     private void renameFile() {
         if(action) return;
         int i = 1;
-        while (true) {
-            if (changeName()) break;
+        while (equalName()) {
             name = "(" + i + ")" + fileName;
             i++;
         }
         action = true;
     }
 
-    private boolean changeName() {
-        for (String s : logFile.list())
-            if (s.equals(name)) return false;
-        return true;
+    private boolean equalName() {
+        for (String s : Objects.requireNonNull(logFile.list()))
+            if (s.equals(name)) return true;
+        return false;
     }
 }
