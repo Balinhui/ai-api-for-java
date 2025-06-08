@@ -39,4 +39,12 @@ public class Message {
         this.annotations = annotations;
         this.refusal = refusal;
     }
+
+    @Override
+    public String toString() {
+        return "Message{" +
+                "role='" + role + '\'' +
+                ", content='" + content + '\'' +
+                '}';
+    }
 }
