@@ -9,7 +9,7 @@ import java.util.Objects;
 
 public class Logger extends LogFile {
     private String name = getFileName();
-    private boolean action = false;
+    private static boolean action = false;
     @Getter
     private static final Logger logger = new Logger();
 
