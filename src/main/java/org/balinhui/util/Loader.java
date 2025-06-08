@@ -1,6 +1,7 @@
 package org.balinhui.util;
 
 import lombok.Getter;
+import org.balinhui.exceptions.DuplicateAdditionException;
 import org.balinhui.json.widgets.Message;
 
 import java.io.File;
@@ -13,6 +14,7 @@ import java.util.Objects;
 
 public class Loader extends LogFile {
     private String name;
+    private static boolean action = false;
     @Getter
     private static final Loader loader = new Loader();
     private int pos;
@@ -20,6 +22,7 @@ public class Loader extends LogFile {
     }
 
     public Message[] load(int i) {
+        if (action) throw new DuplicateAdditionException("你已经添加过一次了");
         String[] logList = getLogList();
         Objects.checkIndex(i, logList.length);
         name = logList[i];
@@ -37,6 +40,7 @@ public class Loader extends LogFile {
         }
         Message[] token = token(sb.toString());
         reviseLogger();
+        action = true;
         return token;
     }
 
