@@ -3,6 +3,8 @@ package org.balinhui.json.widgets;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Objects;
+
 @Getter
 public class Message {
     public static final String USER = "user";
@@ -38,6 +40,18 @@ public class Message {
         this.function_call = function_call;
         this.annotations = annotations;
         this.refusal = refusal;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Message message = (Message) o;
+        return Objects.equals(role, message.role) && Objects.equals(content, message.content);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(role, content);
     }
 
     @Override
