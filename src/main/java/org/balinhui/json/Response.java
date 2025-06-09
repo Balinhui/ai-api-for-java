@@ -41,10 +41,19 @@ public class Response {
 
     @Override
     public String toString() {
-        if (choices[0].getDelta() == null)
-            return choices[0].getMessage().getContent();
-        else
-            return choices[0].getDelta().getContent();
+        if (choices[0].getDelta() == null) {
+            if (choices[0].getMessage().getReasoning_content() == null) {
+                return choices[0].getMessage().getContent();
+            } else {
+                return choices[0].getMessage().getReasoning_content() + "\n\n" +
+                        choices[0].getMessage().getContent();
+            }
+        } else {
+            if (choices[0].getDelta().getReasoning_content() == null)
+                return choices[0].getDelta().getContent();
+            else
+                return choices[0].getDelta().getReasoning_content();
+        }
     }
 }
 
