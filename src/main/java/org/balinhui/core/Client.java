@@ -198,7 +198,8 @@ public class Client {
                             if (ableStore) {
                                 StringBuilder sb = new StringBuilder();
                                 for (Response response : responseList) {
-                                    sb.append(response.getChoices()[0].getDelta().getContent());
+                                    if (response.getChoices()[0].getDelta().getReasoning_content() == null)
+                                        sb.append(response.getChoices()[0].getDelta().getContent());
                                 }
                                 Message message = new Message(Message.ASSISTANT, sb.toString());
                                 storeMessage(message);
