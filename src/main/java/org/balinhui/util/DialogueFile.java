@@ -5,19 +5,19 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 
-public class LogFile {
+public class DialogueFile {
     @Getter
     private static final File logDirectory = new File("history");
     @Getter
-    private static final String fileName = "ai.log.md";
+    private static final String fileName = "dialogue.md";
 
-    protected LogFile() {}
+    protected DialogueFile() {}
 
     static {
         createDir();
     }
 
-    public static @NotNull String[] getLogList() {
+    public static @NotNull String[] getDialogueList() {
         return logDirectory.list() == null ? new String[0] : logDirectory.list();
     }
 

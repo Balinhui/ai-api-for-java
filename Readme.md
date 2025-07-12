@@ -1,31 +1,6 @@
 # 更新：
 
-以前开启stream需要非常繁琐的处理(已不可用)：
-```java
-    ResponseList<Response> list = client.getResponseList();
-    String old = "";
-    while (true) {
-        if (!list.isEmpty()) {
-            if (list.getLast().getChoices() == null) {
-                System.out.println();
-                break;
-            } else {
-                String content = list.getLast().getChoices()[0].getDelta().getContent();
-                if (!content.equals(old)) {
-                old = content;
-                System.out.print(content);
-                }
-            }
-        } else {
-            System.out.print("waiting...\r");
-        }
-    }
-```
-现在只需要：
-```java
-    client.getResponseList(System.out::print);
-    System.out.println();
-```
+
 # 使用列：
 
 ## 普通调用，未开启stream流
@@ -124,13 +99,13 @@ json(Java类与json的互相转换，通过[`jackson`](https://github.com/Faster
 > [Wrong](src/main/java/org/balinhui/json/Wrong.java): 部分报错信息
 
 util(工具)
-> [Loader](src/main/java/org/balinhui/util/Loader.java): 加载历史对话，与[LogFile](src/main/java/org/balinhui/util/LogFile.java)中的`getLogList()`使用。`load(int i)`需要传入`getLogList()`的索引
+> [Loader](src/main/java/org/balinhui/util/Loader.java): 加载历史对话，与[DialogueFile](src/main/java/org/balinhui/util/DialogueFile.java)中的`getLogList()`使用。`load(int i)`需要传入`getDialogueList()`的索引
 > ```java
 > System.out.println(LogFile.getLogList());
 > Loader.getLoader.load(0);
 > ```
 
-> [Logger](src/main/java/org/balinhui/util/Logger.java): 将字符串存入`ai.log.md`文件
+> [Recorder](src/main/java/org/balinhui/util/Recorder.java): 将字符串存入`dialogue.md`文件
 
 > [Store](src/main/java/org/balinhui/util/Store.java): 保存对话记录。要开启此功能需要设置[Client](src/main/java/org/balinhui/core/Client.java)中的`ableStore`为`true`。
 

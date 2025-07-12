@@ -3,11 +3,13 @@ package org.balinhui.core;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Setter;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.balinhui.json.Request;
 import org.balinhui.json.Response;
 import org.balinhui.json.widgets.Message;
 import org.balinhui.json.Wrong;
-import org.balinhui.util.Logger;
+import org.balinhui.util.Recorder;
 import org.balinhui.util.Store;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -30,6 +32,7 @@ public class Client {
     @Setter
     private boolean ableStore = false;
     private ResponseList<Response> responseList;
+    private final Logger logger = LogManager.getLogger(Client.class);
 
     public Client() {
     }
@@ -91,8 +94,12 @@ public class Client {
         responseList = new ResponseList<>(onAddAction);
 
         try {
-            _return = callApi(_send = mapper.writeValueAsString(request));
+            _send = mapper.writeValueAsString(request);
+            logger.info("转化请求 {}", _send);
+            _return = callApi(_send);
+            logger.info("取得响应 {} , 由于流式传输是在接受过程中解析JSON, 因此返回值会是NONE", _return);
             if (!this.request.getStream()) {
+                logger.info("未开启流式传输，直接解析JSON，放入response的0索引位置");
                 //将响应的JSON解析成相应的Java类
                 Response response = mapper.readValue(_return, Response.class);
                 responseList.add(response);
@@ -102,13 +109,17 @@ public class Client {
         } catch (Exception e) {
             try {
                 Wrong wrongInfo = mapper.readValue(_return, Wrong.class);
-                if (wrongInfo.getError() != null)
+                if (wrongInfo.getError() != null) {
+                    logger.error(wrongInfo.getError().getMessage());
                     throw new RuntimeException(wrongInfo.getError().getMessage());
+                }
+                logger.error("API_URL错误。\nevent_id:{}.\nerror_msg:{}", wrongInfo.getEvent_id(), wrongInfo.getError_msg());
                 throw new RuntimeException("API_URL错误。\nevent_id:" + wrongInfo.getEvent_id() +
                         ".\nerror_msg:" + wrongInfo.getError_msg());
             } catch (Exception ex) {
                 System.out.println("发送: " + _send);
                 System.out.println("接收: " + _return);
+                logger.error(e.getMessage());
                 throw new RuntimeException(e);
             }
         }
@@ -138,7 +149,7 @@ public class Client {
     private void storeMessage(Message message) {
         //将返回的消息存入库中
         store.add(message);
-        Logger.getLogger().log(store.toString());
+        Recorder.getRecorder().record(store.toString());
     }
 
     /**
@@ -148,6 +159,7 @@ public class Client {
      * @throws Exception 响应失败抛出<code>Exception</code>
      */
     private String callApi(String requestBody) throws Exception {
+        logger.info("构建请求http");
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(API_URL))
@@ -162,7 +174,9 @@ public class Client {
             return response.body();
         } else {
             //已打开Stream流
+            logger.info("流式传输已开启，将在接收时解析JSON，并添加进responseList");
             final RunState runState = new RunState(true);
+            logger.info("线程暂时阻塞, 用于等待接收");
             client.sendAsync(request, HttpResponse.BodyHandlers.fromLineSubscriber(
                     new Flow.Subscriber<>() {
                         private Flow.Subscription subscription;
@@ -190,6 +204,7 @@ public class Client {
 
                         @Override
                         public void onError(Throwable throwable) {
+                            logger.error("错误：{}", throwable.getMessage());
                             System.err.println("错误: " + throwable.getMessage());
                         }
 
@@ -204,6 +219,7 @@ public class Client {
                                 Message message = new Message(Message.ASSISTANT, sb.toString());
                                 storeMessage(message);
                             }
+                            logger.info("响应结束，设置状态为false，线程继续");
                             runState.state = false;
                         }
                     }));
@@ -223,6 +239,7 @@ public class Client {
     private void reviseURL() {
         if (API_URL.endsWith("/")) API_URL = API_URL + "chat/completions";
         else API_URL = API_URL + "/chat/completions";
+        logger.info("设置通道为chat.completions");
     }
 
     private static class RunState {
@@ -234,13 +251,29 @@ public class Client {
 
     private void checkConfig() {
         if (API_KEY == null) {
-            if ((API_KEY = System.getenv("API_KEY")) == null)
+            if ((API_KEY = System.getenv("API_KEY")) == null) {
+                logger.error("API_KEY的值为null");
                 throw new RuntimeException("API_KEY的值为null");
+            }
+            logger.info("API_KEY的值为null, 从环境变量中取得API_KEY的值");
         }
-        if (API_URL == null) throw new RuntimeException("API_URL的值为null");
-        if (request == null) throw new RuntimeException("没有初始化Request");
-        if (request.getModel() == null) throw new RuntimeException("未指定model");
-        if (request.getMessages() == null) throw new RuntimeException("Request中没有Messages");
+        if (API_URL == null) {
+            logger.error("API_URL的值为null");
+            throw new RuntimeException("API_URL的值为null");
+        }
+        if (request == null) {
+            logger.error("没有初始化Request");
+            throw new RuntimeException("没有初始化Request");
+        }
+        if (request.getModel() == null) {
+            logger.error("未指定model");
+            throw new RuntimeException("未指定model");
+        }
+        if (request.getMessages() == null) {
+            logger.error("Request中没有Messages");
+            throw new RuntimeException("Request中没有Messages");
+        }
+        logger.info("配置检查通过");
     }
 
     @Override

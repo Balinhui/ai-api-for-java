@@ -7,20 +7,20 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Objects;
 
-public class Logger extends LogFile {
+public class Recorder extends DialogueFile {
     private String name = getFileName();
     private static boolean action = false;
     @Getter
-    private static final Logger logger = new Logger();
+    private static final Recorder recorder = new Recorder();
 
-    private Logger() {
+    private Recorder() {
     }
 
 
-    public void log(String log) {
+    public void record(String log) {
         try {
             renameFile();
-            FileWriter fileWriter = new FileWriter(getLogDirectory() + File.separator + name);
+            FileWriter fileWriter = new FileWriter(getLogDirectory() + File.separator + name, action);
             fileWriter.write(log);
             fileWriter.close();
         } catch (IOException e) {

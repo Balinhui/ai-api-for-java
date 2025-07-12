@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Loader extends LogFile {
+public class Loader extends DialogueFile {
     private String name;
     private static boolean action = false;
     @Getter
@@ -23,7 +23,7 @@ public class Loader extends LogFile {
 
     public Message[] load(int i) {
         if (action) throw new DuplicateAdditionException("你已经添加过一次了");
-        String[] logList = getLogList();
+        String[] logList = getDialogueList();
         Objects.checkIndex(i, logList.length);
         name = logList[i];
         File chooseFile = new File(getLogDirectory(), logList[i]);
@@ -85,13 +85,13 @@ public class Loader extends LogFile {
 
     private void reviseLogger() {
         try {
-            Class<?> cls = Class.forName("org.balinhui.util.Logger");
+            Class<?> cls = Class.forName("org.balinhui.util.Recorder");
             Field name = cls.getDeclaredField("name");
             Field action = cls.getDeclaredField("action");
             name.setAccessible(true);
             action.setAccessible(true);
-            name.set(Logger.getLogger(), this.name);
-            action.setBoolean(Logger.getLogger(), true);
+            name.set(Recorder.getRecorder(), this.name);
+            action.setBoolean(Recorder.getRecorder(), true);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
